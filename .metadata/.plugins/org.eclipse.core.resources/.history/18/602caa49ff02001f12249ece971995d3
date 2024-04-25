@@ -1,0 +1,38 @@
+package com.blog.service;
+
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.blog.entity.User;
+import com.blog.repository.UserRepository;
+
+@Service
+public class UserService {
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	public User savedUser(User user) {
+		User userExists = userRepository.findByUsername(user.getUsername());
+		
+		if(userExists == null) {
+			return userRepository.save(user);
+		}else {
+			return null;s
+		}
+	}
+	
+	public User validateUser(User user) {
+		User userExists = userRepository.findByUsername(user.getUsername());
+		
+		if(userExists != null) {
+			if(Objects.equals(userExists.getPassword(), user.getPassword()))
+				return userExists;
+			else
+				return null;
+		}else
+			return null;
+	}
+}
